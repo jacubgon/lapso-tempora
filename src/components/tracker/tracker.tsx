@@ -41,7 +41,7 @@ export function Tracker(props: Props) {
 
 function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, canBypassLock }: Props) {
   const [preferred, setMode] = useState<Mode>(readMode);
-  // Con un cronómetro en marcha siempre se muestra el cronómetro.
+  // Con un cron�metro en marcha siempre se muestra el cron�metro.
   const mode: Mode = running ? "timer" : preferred;
   const activeProjects = projects.filter((p) => !p.archived);
 
@@ -64,7 +64,7 @@ function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, ca
           <div role="tablist" aria-label="Modo de registro" className="inline-flex rounded-lg border border-border bg-card p-1">
             {(
               [
-                { id: "timer", label: "CronÃ³metro", icon: Clock },
+                { id: "timer", label: "Cronómetro", icon: Clock },
                 { id: "manual", label: "Manual", icon: PenLine },
               ] as const
             ).map(({ id, label, icon: Icon }) => (
@@ -74,7 +74,7 @@ function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, ca
                 aria-selected={mode === id}
                 onClick={() => changeMode(id)}
                 disabled={!!running && id === "manual"}
-                title={running && id === "manual" ? "Para el cronÃ³metro para registrar a mano" : undefined}
+                title={running && id === "manual" ? "Para el cronómetro para registrar a mano" : undefined}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition disabled:opacity-40",
                   mode === id ? "bg-primary-soft text-primary" : "text-muted-foreground hover:text-foreground",
@@ -97,7 +97,7 @@ function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, ca
         <Card className={cn("p-4", running && "ring-2 ring-primary/40")}>
           {activeProjects.length === 0 ? (
             <p className="py-2 text-sm text-muted-foreground">
-              TodavÃ­a no tienes proyectos asignados. Pide a producciÃ³n que te aÃ±ada a alguno.
+              Todavía no tienes proyectos asignados. Pide a producción que te añada a alguno.
             </p>
           ) : mode === "timer" ? (
             <TimerPanel key={running?.id ?? "idle"} running={running} projects={projects} tasks={tasks} />

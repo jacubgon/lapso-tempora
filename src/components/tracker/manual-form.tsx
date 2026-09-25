@@ -28,7 +28,7 @@ function initialTimes(entry?: TimeEntry) {
   return { date: format(new Date(), "yyyy-MM-dd"), start: "09:00", end: "" };
 }
 
-/** Convierte fecha + horas locales en un rango. Si fin <= inicio, termina al dÃ­a siguiente. */
+/** Convierte fecha + horas locales en un rango. Si fin <= inicio, termina al día siguiente. */
 function toRange(date: string, start: string, end: string) {
   if (!date || !start || !end) return null;
   const s = new Date(`${date}T${start}`);
@@ -67,7 +67,7 @@ export function ManualForm({ projects, tasks, entry, onDone, layout = "panel" }:
       }
       toast.success(entry ? "Entrada actualizada" : "Tiempo registrado");
       if (!entry) {
-        // Encadenar: la siguiente entrada empieza donde acabÃ³ esta.
+        // Encadenar: la siguiente entrada empieza donde acabó esta.
         setFields((f) => ({ ...f, title: "" }));
         setTimes({ date: format(range.end, "yyyy-MM-dd"), start: format(range.end, "HH:mm"), end: "" });
       }
@@ -122,10 +122,10 @@ export function ManualForm({ projects, tasks, entry, onDone, layout = "panel" }:
             {range ? (
               <>
                 <span className="font-medium text-foreground">{formatDuration(range.seconds)}</span>
-                {range.overnight && " Â· termina al dÃ­a siguiente"}
+                {range.overnight && " · termina al día siguiente"}
               </>
             ) : (
-              "DuraciÃ³n: â€”"
+              "Duración: —"
             )}
           </p>
           <div className="flex gap-2">
@@ -136,7 +136,7 @@ export function ManualForm({ projects, tasks, entry, onDone, layout = "panel" }:
             )}
             <Button type="submit" disabled={pending} className="min-w-28">
               {pending && <Loader2 className="size-4 animate-spin" />}
-              {entry ? "Guardar" : "AÃ±adir"}
+              {entry ? "Guardar" : "Añadir"}
             </Button>
           </div>
         </div>
