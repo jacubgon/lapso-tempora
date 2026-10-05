@@ -6,7 +6,11 @@ import { logout } from "@/app/login/actions";
 import { Nav, type NavItem } from "@/components/shell/nav";
 
 const userNav: NavItem[] = [{ href: "/", label: "Mis horas" }];
-const adminNav: NavItem[] = [];
+const adminNav: NavItem[] = [
+  { href: "/produccion", label: "Informes" },
+  { href: "/produccion/detalle", label: "Detalle" },
+  { href: "/produccion/gestion", label: "Gestión" },
+];
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const { profile } = await getSession();

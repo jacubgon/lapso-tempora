@@ -11,8 +11,11 @@ export function Nav({ items }: { items: NavItem[] }) {
   return (
     <nav className="-mb-px flex gap-1 overflow-x-auto">
       {items.map((item) => {
-        const active =
-          item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`);
+        // El enlace más específico que encaje gana (/produccion no se ilumina en /produccion/detalle)
+        const matches = (href: string) =>
+          href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+        const best = items.filter((i) => matches(i.href)).sort((a, b) => b.href.length - a.href.length)[0];
+        const active = best?.href === item.href;
         return (
           <Link
             key={item.href}

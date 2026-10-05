@@ -31,19 +31,19 @@ const people = [
 ];
 
 const projects = [
-  { name: "Web corporativa", client: "Grupo Alba", color: "#6366f1",
+  { name: "Web corporativa", client: "Grupo Alba", color: "#2a78d6",
     tasks: ["Diseño UI", "Maquetación", "Contenidos", "Reuniones"],
     members: ["ana", "pablo", "marta", "sergio"] },
-  { name: "App de reservas", client: "Hotel Mirador", color: "#0ea5e9",
+  { name: "App de reservas", client: "Hotel Mirador", color: "#eb6834",
     tasks: ["Backend", "Frontend", "QA", "Reuniones"],
     members: ["marta", "diego", "lucia", "ana"] },
-  { name: "Campaña otoño", client: "Bodegas Sierra", color: "#f59e0b",
+  { name: "Campaña otoño", client: "Bodegas Sierra", color: "#1baf7a",
     tasks: ["Concepto", "Piezas gráficas", "Revisión cliente"],
     members: ["ana", "pablo", "sergio"] },
-  { name: "Mantenimiento", client: "Varios", color: "#10b981",
+  { name: "Mantenimiento", client: "Varios", color: "#eda100",
     tasks: ["Incidencias", "Actualizaciones"],
     members: ["diego", "lucia", "marta"] },
-  { name: "Interno", client: null, color: "#a855f7",
+  { name: "Interno", client: null, color: "#e87ba4",
     tasks: ["Reunión general", "Formación", "Gestión"],
     members: ["ana", "pablo", "marta", "diego", "lucia", "sergio"] },
 ];
