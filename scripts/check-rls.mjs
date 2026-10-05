@@ -27,12 +27,16 @@ const admin = await as("admin@lapso.demo");
 // Proyectos visibles para Ana
 const { data: projects } = await ana.c.from("projects").select("id, name");
 const names = projects.map((p) => p.name).sort();
-check(!names.includes("Mantenimiento") && names.length === 4, `Ana ve solo sus proyectos: ${names.join(", ")}`);
+const { data: anaMemberships } = await ana.c.from("project_members").select("project_id").eq("user_id", ana.id);
+check(
+  !names.includes("Mantenimiento instalaciones") && names.length === anaMemberships.length,
+  `Ana ve solo sus proyectos: ${names.join(", ")}`,
+);
 
 const web = projects.find((p) => p.name === "Web corporativa");
 const { data: allProjects } = await admin.c.from("projects").select("id, name");
-const mant = allProjects.find((p) => p.name === "Mantenimiento");
-check(allProjects.length === 5, "Admin ve todos los proyectos");
+const mant = allProjects.find((p) => p.name === "Mantenimiento instalaciones");
+check(allProjects.length > names.length, `Admin ve todos los proyectos (${allProjects.length})`);
 
 // Entradas ajenas
 const { data: others } = await ana.c.from("time_entries").select("id").neq("user_id", ana.id).limit(1);

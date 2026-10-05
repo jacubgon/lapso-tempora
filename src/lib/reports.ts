@@ -150,6 +150,25 @@ export type RawEntry = {
 };
 
 export async function fetchReportEntries(supabase: Supabase, f: Filters, period: Period, lookup: Lookup) {
+  // Vía rápida: una sola llamada a report_entries() (migración 0002)
+  const { data, error } = await supabase.rpc("report_entries", {
+    p_from: period.from?.toISOString() ?? null,
+    p_to: period.to?.toISOString() ?? null,
+    p_users: userScope(f, lookup),
+    p_project: f.project,
+    p_task: f.task,
+  });
+  if (!error) {
+    return (data as [string, string, string | null, number, number][]).map(([u, p, t, s, e]) => ({
+      user_id: u,
+      project_id: p,
+      task_id: t,
+      started_at: new Date(s * 1000).toISOString(),
+      ended_at: new Date(e * 1000).toISOString(),
+    }));
+  }
+  // Sin la migración aplicada: paginamos la tabla
+  if (!/report_entries|PGRST202|function/i.test(error.message + (error.code ?? ""))) throw new Error(error.message);
   return fetchAll<RawEntry>((from, to) =>
     applyFilters(
       supabase.from("time_entries").select("user_id, project_id, task_id, started_at, ended_at"),
