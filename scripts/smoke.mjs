@@ -26,7 +26,8 @@ async function visit(cookie, path, expect = [], { binary = false } = {}) {
   const t = Date.now();
   const res = await fetch(base + path, { headers: { cookie }, redirect: "manual" });
   const ms = Date.now() - t;
-  const body = binary ? "" : await res.text();
+  // React separa texto e interpolaciones con <!-- -->: lo quitamos para buscar frases completas
+  const body = binary ? "" : (await res.text()).replaceAll("<!-- -->", "");
   const missing = expect.filter((s) => !body.includes(s));
   const errorPage = /Application error|Unhandled Runtime Error|__next_error__/.test(body);
   const ok = res.status === 200 && !missing.length && !errorPage;
@@ -57,7 +58,8 @@ await visit(admin, "/cuenta", ["Cambiar contraseña"]);
 await visit("", "/login/recuperar", ["Enviar enlace"]);
 
 const ana = await cookieFor("ana@lapso.demo");
-await visit(ana, "/", ["Cronómetro"]);
+// El tracker se pinta en cliente (zona horaria del navegador): en el HTML solo está la cabecera
+await visit(ana, "/", ["Mis horas", "Ana Martín"]);
 await visit(ana, "/cuenta", ["Mi cuenta", "Cambiar contraseña"]);
 const r = await fetch(base + "/produccion", { headers: { cookie: ana }, redirect: "manual" });
 const blocked = r.status >= 300 && r.status < 400;
