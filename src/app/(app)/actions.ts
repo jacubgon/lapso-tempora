@@ -118,9 +118,15 @@ export async function updateRunning(id: string, input: Fields): Promise<ActionRe
   return { ok: true };
 }
 
-export async function stopTimer(id: string, input: Fields): Promise<ActionResult> {
+/**
+ * Para el cronómetro. `endedAt` permite fijar la hora real de fin
+ * (p. ej. si se olvidó pararlo); por defecto, ahora.
+ */
+export async function stopTimer(id: string, input: Fields, endedAt?: string): Promise<ActionResult> {
   const parsed = fieldsSchema.safeParse(input);
   if (!parsed.success || !idSchema.safeParse(id).success) return fail("Datos no válidos.");
+  if (endedAt && !z.iso.datetime({ offset: true }).safeParse(endedAt).success) return fail("Hora de fin no válida.");
+  if (endedAt && new Date(endedAt).getTime() > Date.now() + 60_000) return fail("La hora de fin no puede ser futura.");
   const missing = requireComplete(parsed.data);
   if (missing) return fail(missing);
   try {
@@ -132,8 +138,11 @@ export async function stopTimer(id: string, input: Fields): Promise<ActionResult
       .select("started_at")
       .eq("id", id)
       .single();
+    const startMs = entry ? new Date(entry.started_at).getTime() : 0;
+    if (endedAt && new Date(endedAt).getTime() <= startMs)
+      return fail("La hora de fin debe ser posterior a la de inicio.");
     // Si se para en el mismo segundo, garantizamos fin > inicio.
-    const end = Math.max(Date.now(), entry ? new Date(entry.started_at).getTime() + 1000 : 0);
+    const end = endedAt ? new Date(endedAt).getTime() : Math.max(Date.now(), startMs + 1000);
     const { error } = await supabase
       .from("time_entries")
       .update({ ...r.row, ended_at: new Date(end).toISOString() })

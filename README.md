@@ -9,7 +9,11 @@ Registro de horas por proyecto para equipos (tipo Clockify). Next.js 16 + Supaba
 3. **Variables**: copia `.env.example` a `.env.local` y rellena las claves
    (*Project Settings → API*). La `service_role` solo se usa en servidor y en el seed.
 4. **Auth**: en *Authentication → Sign In / Providers*, desactiva “Allow new users to sign up”
-   (los usuarios los crea producción).
+   (los usuarios los crea producción). En *Authentication → URL Configuration* pon como
+   *Site URL* la URL pública y añade `<url>/auth/confirm` (y `http://localhost:3100/auth/confirm`
+   en desarrollo) a *Redirect URLs*: lo usa el enlace de «¿Has olvidado tu contraseña?».
+   Para producción, configura un SMTP propio (*Authentication → Emails → SMTP*): el correo
+   incluido en Supabase solo envía unos pocos emails por hora.
 5. **Datos demo** (opcional): `npm run seed` → crea usuarios ficticios `@lapso.demo`,
    5 proyectos y ~3 meses de horas.
 6. `npm run dev` → http://localhost:3000

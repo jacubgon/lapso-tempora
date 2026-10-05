@@ -4,7 +4,8 @@ import { LoginForm } from "./login-form";
 
 export const metadata = { title: "Entrar" };
 
-export default function LoginPage() {
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  const { error } = await searchParams;
   return (
     <main className="flex min-h-dvh items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm">
@@ -15,6 +16,11 @@ export default function LoginPage() {
           <h1 className="text-2xl font-semibold tracking-tight">{brand.name}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{brand.tagline}</p>
         </div>
+        {error === "enlace" && (
+          <p role="alert" className="mb-4 rounded-lg bg-destructive-soft px-3 py-2 text-sm text-destructive">
+            El enlace ha caducado o ya se usó. Pide uno nuevo desde «¿La has olvidado?».
+          </p>
+        )}
         <Card className="p-6">
           <LoginForm />
         </Card>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { Button, Input, Label } from "@/components/ui";
 import { login, type LoginState } from "./actions";
@@ -23,7 +24,12 @@ export function LoginForm() {
         />
       </div>
       <div>
-        <Label htmlFor="password">Contraseña</Label>
+        <div className="flex items-baseline justify-between">
+          <Label htmlFor="password">Contraseña</Label>
+          <Link href="/login/recuperar" className="text-xs text-primary hover:underline">
+            ¿La has olvidado?
+          </Link>
+        </div>
         <Input id="password" name="password" type="password" autoComplete="current-password" required />
       </div>
       {state.error && (

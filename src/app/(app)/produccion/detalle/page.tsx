@@ -2,7 +2,8 @@ import Link from "next/link";
 import { TZDate } from "@date-fns/tz";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { ArrowDownUp, ChevronLeft, ChevronRight, PenLine, Timer } from "lucide-react";
+import { AlertTriangle, ArrowDownUp, ChevronLeft, ChevronRight, PenLine, Timer } from "lucide-react";
+import { EntryEditorProvider, EntryRowActions } from "@/components/reports/entry-editor";
 import { requireAdmin } from "@/lib/session";
 import { Card } from "@/components/ui";
 import { ReportFilters } from "@/components/reports/report-filters";
@@ -21,6 +22,8 @@ import { formatDuration, formatHours } from "@/lib/utils";
 export const metadata = { title: "Detalle" };
 
 const PAGE_SIZE = 100;
+/** Entradas más largas se marcan como posible cronómetro olvidado. */
+const LONG_ENTRY_HOURS = 10;
 
 type Row = {
   id: string;
@@ -115,6 +118,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
         </Link>
       </div>
 
+      <EntryEditorProvider lookup={{ projects: lookup.projects, tasks: lookup.tasks, people: lookup.people }}>
       <Card className="overflow-hidden">
         {rows.length === 0 ? (
           <p className="px-6 py-14 text-center text-sm text-muted-foreground">No hay entradas con estos filtros.</p>
@@ -128,8 +132,11 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
                   <th className="px-3 py-2.5 font-medium">Persona</th>
                   <th className="px-3 py-2.5 font-medium">Proyecto · subtarea</th>
                   <th className="px-3 py-2.5 font-medium">Título</th>
-                  <th className="px-4 py-2.5 font-medium">
+                  <th className="px-3 py-2.5 font-medium">
                     <span className="sr-only">Origen</span>
+                  </th>
+                  <th className="px-2 py-2.5 font-medium">
+                    <span className="sr-only">Acciones</span>
                   </th>
                 </tr>
               </thead>
@@ -149,7 +156,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
                   return [
                     showDay && (
                       <tr key={`d-${day}`} className="border-t border-border bg-muted/30">
-                        <td colSpan={6} className="px-4 py-1.5 text-xs font-semibold">
+                        <td colSpan={7} className="px-4 py-1.5 text-xs font-semibold">
                           <span className="capitalize">{dayLabel}</span>
                           <span className="float-right tabular-nums text-muted-foreground">
                             {formatDuration(dayTotals.get(day) ?? 0)}
@@ -164,6 +171,14 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
                       </td>
                       <td className="whitespace-nowrap px-3 py-2.5 text-right font-semibold tabular-nums">
                         {formatDuration(secs)}
+                        {secs > LONG_ENTRY_HOURS * 3600 && (
+                          <span
+                            className="ml-1 inline-flex align-middle text-[#b37a00] dark:text-[#eda100]"
+                            title={`Más de ${LONG_ENTRY_HOURS} h: ¿cronómetro olvidado?`}
+                          >
+                            <AlertTriangle className="size-3.5" />
+                          </span>
+                        )}
                       </td>
                       <td className="px-3 py-2.5">
                         <p className="whitespace-nowrap font-medium">{person?.full_name || person?.email}</p>
@@ -177,7 +192,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
                         {task && <p className="text-xs text-muted-foreground">{task.name}</p>}
                       </td>
                       <td className="min-w-48 px-3 py-2.5">{e.title}</td>
-                      <td className="whitespace-nowrap px-4 py-2.5 text-xs text-muted-foreground">
+                      <td className="whitespace-nowrap px-3 py-2.5 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1" title={e.source === "timer" ? "Cronómetro" : "Manual"}>
                           {e.source === "timer" ? <Timer className="size-3.5" /> : <PenLine className="size-3.5" />}
                           {edited && (
@@ -190,6 +205,9 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
                           )}
                         </span>
                       </td>
+                      <td className="px-2 py-1">
+                        <EntryRowActions entry={e} who={person?.full_name || person?.email || ""} />
+                      </td>
                     </tr>,
                   ];
                 })}
@@ -198,6 +216,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
           </div>
         )}
       </Card>
+      </EntryEditorProvider>
 
       {pages > 1 && (
         <nav className="flex items-center justify-center gap-2 text-sm" aria-label="Paginación">

@@ -255,6 +255,32 @@ export async function deleteDepartment(id: string) {
   });
 }
 
+// --- Auditoría --------------------------------------------------------------------
+
+export type AuditRow = {
+  action: "insert" | "update" | "delete";
+  changed_at: string;
+  changed_by: string | null;
+  old_data: Record<string, unknown> | null;
+  new_data: Record<string, unknown> | null;
+};
+
+export async function getEntryAudit(entryId: string): Promise<{ ok: true; rows: AuditRow[] } | { ok: false; error: string }> {
+  try {
+    if (!uuid.safeParse(entryId).success) return { ok: false, error: "Datos no válidos." };
+    const { supabase } = await adminSession();
+    const { data, error } = await supabase
+      .from("time_entry_audit")
+      .select("action, changed_at, changed_by, old_data, new_data")
+      .eq("entry_id", entryId)
+      .order("changed_at", { ascending: true });
+    if (error) return { ok: false, error: error.message };
+    return { ok: true, rows: (data ?? []) as AuditRow[] };
+  } catch (e) {
+    return { ok: false, error: (e as Error).message };
+  }
+}
+
 // --- Ajustes ----------------------------------------------------------------------
 
 const day = z

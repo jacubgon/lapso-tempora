@@ -19,23 +19,32 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-dvh">
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4">
-          <Link href="/" className="flex items-center gap-2 py-3">
+        <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 sm:gap-4">
+          <Link href="/" className="flex shrink-0 items-center gap-2 py-3" aria-label={brand.name}>
             <span className="inline-flex size-7 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
               {brand.initial}
             </span>
-            <span className="font-semibold tracking-tight">{brand.name}</span>
+            <span className="hidden font-semibold tracking-tight sm:inline">{brand.name}</span>
           </Link>
           <div className="min-w-0 flex-1">
             <Nav items={items} />
           </div>
-          <div className="flex items-center gap-2">
-            <div className="hidden text-right leading-tight sm:block">
-              <p className="text-sm font-medium">{profile.full_name || profile.email}</p>
-              <p className="text-xs text-muted-foreground">
-                {profile.role === "admin" ? "Producción" : profile.email}
-              </p>
-            </div>
+          <div className="flex shrink-0 items-center gap-1">
+            <Link
+              href="/cuenta"
+              title="Mi cuenta"
+              className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition hover:bg-muted"
+            >
+              <span className="hidden text-right leading-tight md:block">
+                <span className="block text-sm font-medium">{profile.full_name || profile.email}</span>
+                <span className="block text-xs text-muted-foreground">
+                  {profile.role === "admin" ? "Producción" : "Mi cuenta"}
+                </span>
+              </span>
+              <span className="flex size-8 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary">
+                {(profile.full_name || profile.email).charAt(0).toUpperCase()}
+              </span>
+            </Link>
             <form action={logout}>
               <button
                 type="submit"

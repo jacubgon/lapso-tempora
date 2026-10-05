@@ -53,8 +53,12 @@ await visit(admin, "/produccion/exportar?tipo=detalle&formato=csv&p=cycle", [], 
 await visit(admin, "/produccion/exportar?tipo=detalle&formato=xlsx&p=all", [], { binary: true });
 await visit(admin, "/produccion/exportar?tipo=resumen&formato=xlsx&p=month", [], { binary: true });
 
+await visit(admin, "/cuenta", ["Cambiar contraseña"]);
+await visit("", "/login/recuperar", ["Enviar enlace"]);
+
 const ana = await cookieFor("ana@lapso.demo");
 await visit(ana, "/", ["Cronómetro"]);
+await visit(ana, "/cuenta", ["Mi cuenta", "Cambiar contraseña"]);
 const r = await fetch(base + "/produccion", { headers: { cookie: ana }, redirect: "manual" });
 const blocked = r.status >= 300 && r.status < 400;
 if (!blocked) failed++;
