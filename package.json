@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "node --env-file=.env.local scripts/seed.mjs",
-    "check:rls": "node --env-file=.env.local scripts/check-rls.mjs"
+    "check:rls": "node --env-file=.env.local scripts/check-rls.mjs",
+    "demo:settings": "node --env-file=.env.local scripts/demo-settings.mjs",
+    "smoke": "node --env-file=.env.local scripts/smoke.mjs"
   },
   "dependencies": {
     "@date-fns/tz": "^1.5.0",
