@@ -9,7 +9,7 @@ export type NavItem = { href: string; label: string };
 export function Nav({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
   return (
-    <nav className="-mb-px flex gap-1 overflow-x-auto">
+    <nav className="flex gap-1.5 overflow-x-auto px-1 py-2.5">
       {items.map((item) => {
         // El enlace más específico que encaje gana (/produccion no se ilumina en /produccion/detalle)
         const matches = (href: string) =>
@@ -21,10 +21,8 @@ export function Nav({ items }: { items: NavItem[] }) {
             key={item.href}
             href={item.href}
             className={cn(
-              "whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition",
-              active
-                ? "border-primary text-foreground"
-                : "border-transparent text-muted-foreground hover:text-foreground",
+              "whitespace-nowrap rounded-xl px-3 py-1.5 text-sm font-medium transition",
+              active ? "segmented-on" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {item.label}

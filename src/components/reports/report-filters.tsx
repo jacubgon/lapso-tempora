@@ -51,14 +51,14 @@ export function ReportFilters({ lookup, period, show = { department: true, proje
     <div className="space-y-3">
       {/* Periodo */}
       <div className="flex flex-wrap items-center gap-2">
-        <div className="inline-flex flex-wrap rounded-lg border border-border bg-card p-1">
+        <div className="segmented">
           {PERIOD_OPTIONS.filter((o) => o.id !== "cycle" || lookup.hasCycle).map((o) => (
             <button
               key={o.id}
               onClick={() => update({ p: o.id, d: null })}
               className={cn(
-                "rounded-md px-3 py-1.5 text-sm font-medium transition",
-                period.kind === o.id ? "bg-primary-soft text-primary" : "text-muted-foreground hover:text-foreground",
+                "rounded-lg px-3 py-1.5 text-sm font-medium transition",
+                period.kind === o.id ? "segmented-on" : "text-muted-foreground hover:text-foreground",
               )}
             >
               {o.label}

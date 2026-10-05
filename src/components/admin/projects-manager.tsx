@@ -258,7 +258,7 @@ function TaskList({ tasks }: { tasks: TaskRow[] }) {
   return (
     <div>
       <Label>Subtareas creadas por el equipo</Label>
-      <ul className="max-h-40 divide-y divide-border overflow-y-auto rounded-lg border border-border">
+      <ul className="max-h-40 divide-y divide-border overflow-y-auto rounded-xl bg-background neu-inset-sm">
         {sorted.map((t) => (
           <li key={t.id} className="flex items-center gap-2 px-3 py-1.5 text-sm">
             {editingId === t.id ? (

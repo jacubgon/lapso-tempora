@@ -61,7 +61,7 @@ function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, ca
     <div className="space-y-8">
       <div>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-          <div role="tablist" aria-label="Modo de registro" className="inline-flex rounded-lg border border-border bg-card p-1">
+          <div role="tablist" aria-label="Modo de registro" className="segmented">
             {(
               [
                 { id: "timer", label: "Cronómetro", icon: Clock },
@@ -76,8 +76,8 @@ function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, ca
                 disabled={!!running && id === "manual"}
                 title={running && id === "manual" ? "Para el cronómetro para registrar a mano" : undefined}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition disabled:opacity-40",
-                  mode === id ? "bg-primary-soft text-primary" : "text-muted-foreground hover:text-foreground",
+                  "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition disabled:opacity-40",
+                  mode === id ? "segmented-on" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 <Icon className="size-4" /> {label}
@@ -94,7 +94,7 @@ function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, ca
           </div>
         </div>
 
-        <Card className={cn("p-4", running && "ring-2 ring-primary/40")}>
+        <Card className={cn("p-4", running && "outline-2 outline-primary/50")}>
           {activeProjects.length === 0 ? (
             <p className="py-2 text-sm text-muted-foreground">
               Todavía no tienes proyectos asignados. Pide a producción que te añada a alguno.

@@ -18,7 +18,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/85 pt-[env(safe-area-inset-top)] backdrop-blur">
+      <header className="sticky top-0 z-30 bg-background/90 pt-[env(safe-area-inset-top)] shadow-[0_8px_16px_-12px_var(--neu-dark)] backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 sm:gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 py-3" aria-label={brand.name}>
             <span className="inline-flex size-7 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">

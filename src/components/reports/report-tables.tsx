@@ -53,9 +53,9 @@ export function GroupTable({ rows, total, dimLabel }: { rows: GroupRow[]; total:
                 </div>
               </td>
               <td className="py-2.5 pr-3">
-                <div className="h-2 rounded-full bg-muted">
+                <div className="h-2.5 rounded-full bg-background p-[2px] neu-inset-sm">
                   <div
-                    className="h-2 rounded-full"
+                    className="h-full rounded-full"
                     style={{ width: `${max ? (r.seconds / max) * 100 : 0}%`, background: r.color }}
                   />
                 </div>

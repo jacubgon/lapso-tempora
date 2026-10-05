@@ -223,7 +223,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
           <Link
             href={qs({ pagina: page > 2 ? String(page - 1) : null })}
             aria-disabled={page <= 1}
-            className={`inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card ${page <= 1 ? "pointer-events-none opacity-40" : "hover:bg-muted"}`}
+            className={`neu-btn inline-flex size-9 items-center justify-center rounded-xl ${page <= 1 ? "pointer-events-none opacity-40" : ""}`}
           >
             <ChevronLeft className="size-4" />
           </Link>
@@ -233,7 +233,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
           <Link
             href={qs({ pagina: String(page + 1) })}
             aria-disabled={page >= pages}
-            className={`inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card ${page >= pages ? "pointer-events-none opacity-40" : "hover:bg-muted"}`}
+            className={`neu-btn inline-flex size-9 items-center justify-center rounded-xl ${page >= pages ? "pointer-events-none opacity-40" : ""}`}
           >
             <ChevronRight className="size-4" />
           </Link>

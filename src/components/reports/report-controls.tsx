@@ -12,7 +12,7 @@ export function GroupBySelect({ options, value }: { options: { id: string; label
   const [, startTransition] = useTransition();
 
   return (
-    <div className="inline-flex flex-wrap rounded-lg border border-border bg-card p-0.5" role="radiogroup" aria-label="Agrupar por">
+    <div className="segmented" role="radiogroup" aria-label="Agrupar por">
       {options.map((o) => (
         <button
           key={o.id}
@@ -24,8 +24,8 @@ export function GroupBySelect({ options, value }: { options: { id: string; label
             startTransition(() => router.push(`${pathname}?${next.toString()}`, { scroll: false }));
           }}
           className={cn(
-            "rounded-md px-2.5 py-1 text-xs font-medium transition",
-            value === o.id ? "bg-primary-soft text-primary" : "text-muted-foreground hover:text-foreground",
+            "rounded-lg px-2.5 py-1 text-xs font-medium transition",
+            value === o.id ? "segmented-on" : "text-muted-foreground hover:text-foreground",
           )}
         >
           {o.label}
@@ -46,7 +46,7 @@ export function ExportLinks({ kind }: { kind: "resumen" | "detalle" }) {
     return `/produccion/exportar?${next.toString()}`;
   };
   const cls =
-    "inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-3 text-sm font-medium transition hover:bg-muted";
+    "neu-btn inline-flex h-9 items-center gap-1.5 rounded-xl px-3 text-sm font-medium";
   return (
     <div className="flex gap-2">
       <a href={href("xlsx")} className={cls}>

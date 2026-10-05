@@ -35,17 +35,15 @@ export default async function GestionPage({ searchParams }: { searchParams: Prom
         <p className="text-sm text-muted-foreground">Proyectos, personas y reglas del registro de horas.</p>
       </div>
 
-      <nav className="flex gap-1 border-b border-border" aria-label="Secciones de gestión">
+      <nav className="segmented" aria-label="Secciones de gestión">
         {TABS.map((t) => (
           <Link
             key={t.id}
             href={`/produccion/gestion?tab=${t.id}`}
             scroll={false}
             className={cn(
-              "-mb-px border-b-2 px-3 py-2 text-sm font-medium transition",
-              tab === t.id
-                ? "border-primary text-foreground"
-                : "border-transparent text-muted-foreground hover:text-foreground",
+              "rounded-lg px-3 py-1.5 text-sm font-medium transition",
+              tab === t.id ? "segmented-on" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {t.label}

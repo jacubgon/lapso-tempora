@@ -52,7 +52,7 @@ export function HoursChart({ data, keys, bucketLabel }: { data: Point[]; keys: S
                   const rows = payload.filter((p) => Number(p.value) > 0).reverse();
                   const total = rows.reduce((s, p) => s + Number(p.value), 0);
                   return (
-                    <div className="min-w-44 rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-lg">
+                    <div className="min-w-44 rounded-xl bg-card px-3 py-2 text-xs neu-raised">
                       <p className="mb-1.5 flex justify-between gap-4 font-semibold">
                         <span>{label}</span>
                         <span className="tabular-nums">{fmtH(total)}</span>
