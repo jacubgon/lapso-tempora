@@ -1,5 +1,7 @@
 # Despliegue en Netlify (Next.js se detecta solo y usa su runtime oficial)
 [build]
+  # Compilar en Netlify (Linux), no con `netlify deploy --build` en Windows: su empaquetador
+  # del proxy de Next resuelve mal las rutas C:/ y falla.
   command = "npm run build"
   publish = ".next"
 
