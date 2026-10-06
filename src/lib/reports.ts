@@ -304,7 +304,43 @@ function bucketLabel(d: TZDate, b: Bucket) {
   return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
 }
 
-const secs = (e: RawEntry) => (new Date(e.ended_at).getTime() - new Date(e.started_at).getTime()) / 1000;
+const secs = (e: RawEntry) => (Date.parse(e.ended_at) - Date.parse(e.started_at)) / 1000;
+
+/**
+ * Día local ("yyyy-MM-dd") de un instante en la zona dada, memoizado por hora UTC:
+ * los cambios de horario ocurren en horas en punto, así que toda la hora cae en el mismo día.
+ * Evita crear miles de TZDate al agregar informes grandes.
+ */
+function makeDayKey(tz: string) {
+  const fmt = new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" });
+  const cache = new Map<number, string>();
+  return (iso: string) => {
+    const hour = Math.floor(Date.parse(iso) / 3_600_000);
+    let key = cache.get(hour);
+    if (!key) {
+      key = fmt.format(new Date(hour * 3_600_000));
+      cache.set(hour, key);
+    }
+    return key;
+  };
+}
+
+/** Clave de cubo a partir del día local: el propio día, su lunes o su mes. */
+function makeBucketKey(b: Bucket) {
+  const cache = new Map<string, string>();
+  return (day: string) => {
+    if (b === "day") return day;
+    if (b === "month") return day.slice(0, 7);
+    let key = cache.get(day);
+    if (!key) {
+      const d = new Date(`${day}T00:00:00Z`);
+      d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+      key = d.toISOString().slice(0, 10);
+      cache.set(day, key);
+    }
+    return key;
+  };
+}
 
 export function buildReport(entries: RawEntry[], f: Filters, period: Period, lookup: Lookup): Report {
   const tz = lookup.settings.tz;
@@ -316,12 +352,13 @@ export function buildReport(entries: RawEntry[], f: Filters, period: Period, loo
   const people = new Set<string>();
   const days = new Set<string>();
   const personDays = new Set<string>();
+  const dayKey = makeDayKey(tz);
   let total = 0;
   for (const e of entries) {
     const s = secs(e);
     total += s;
     people.add(e.user_id);
-    const day = format(new TZDate(e.started_at, tz), "yyyy-MM-dd");
+    const day = dayKey(e.started_at);
     days.add(day);
     personDays.add(`${e.user_id}|${day}`);
     const k = groupKeyOf(e, dim, L);
@@ -362,8 +399,9 @@ export function buildReport(entries: RawEntry[], f: Filters, period: Period, loo
       series.set(point.bucket, point);
     }
   }
+  const bucketKey = makeBucketKey(bucket);
   for (const e of entries) {
-    const bk = bucketOf(new TZDate(e.started_at, tz), bucket);
+    const bk = bucketKey(dayKey(e.started_at));
     const point = series.get(bk);
     if (!point) continue;
     const gk = groupKeyOf(e, dim, L);
