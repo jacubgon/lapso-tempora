@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Generado por el empaquetador de Netlify
+deno.lock
