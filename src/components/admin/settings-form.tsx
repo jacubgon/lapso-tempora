@@ -10,7 +10,7 @@ import { saveSettings } from "@/app/(app)/produccion/gestion/actions";
 
 type Settings = { lockBefore: string | null; cycleAnchor: string | null; cycleDays: number };
 
-const nice = (d: string) => format(parseISO(d), "EEEE d 'de' MMMM yyyy", { locale: es });
+const nice = (d: string) => format(parseISO(d), "EEEE d 'de' MMMM 'de' yyyy", { locale: es });
 
 /** Inicio del ciclo que contiene `today`. */
 function currentCycleStart(anchor: string, days: number, today = new Date()) {

@@ -98,7 +98,14 @@ export function Dialog({
     <dialog
       ref={ref}
       onClose={onClose}
-      onClick={(e) => e.target === ref.current && onClose()}
+      onClick={(e) => {
+        // Cerrar solo con clic real en el fondo: los campos de fecha/hora pueden
+        // reportar el propio <dialog> como destino aunque el clic esté dentro.
+        if (e.target !== ref.current) return;
+        const r = ref.current.getBoundingClientRect();
+        const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!inside) onClose();
+      }}
       className={cn(
         "m-auto w-[calc(100%-2rem)] max-w-lg rounded-xl border border-border bg-card p-0 text-foreground shadow-2xl shadow-black/10 backdrop:bg-black/35",
         className,
