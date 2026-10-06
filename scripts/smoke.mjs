@@ -54,6 +54,7 @@ await visit(admin, "/produccion/exportar?tipo=detalle&formato=csv&p=cycle", [], 
 await visit(admin, "/produccion/exportar?tipo=detalle&formato=xlsx&p=all", [], { binary: true });
 await visit(admin, "/produccion/exportar?tipo=resumen&formato=xlsx&p=month", [], { binary: true });
 
+await visit(admin, "/produccion/uso", ["Uso de la aplicación", "Personas que registran cada día"]);
 await visit(admin, "/cuenta", ["Cambiar contraseña"]);
 await visit("", "/login/recuperar", ["Enviar enlace"]);
 

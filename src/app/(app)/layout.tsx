@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { brand } from "@/config/brand";
 import { getSession } from "@/lib/session";
+import { canSeeUsage } from "@/lib/usage";
 import { logout } from "@/app/login/actions";
 import { Nav, type NavItem } from "@/components/shell/nav";
 
@@ -14,7 +15,10 @@ const adminNav: NavItem[] = [
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const { profile } = await getSession();
-  const items = profile.role === "admin" ? [...userNav, ...adminNav] : userNav;
+  const items =
+    profile.role === "admin"
+      ? [...userNav, ...adminNav, ...(canSeeUsage(profile) ? [{ href: "/produccion/uso", label: "Uso" }] : [])]
+      : userNav;
 
   return (
     <div className="min-h-dvh">
