@@ -96,13 +96,15 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">Detalle de entradas</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">Detalle de entradas</h1>
           <p className="text-sm text-muted-foreground">Todas las entradas de tiempo, en orden cronológico.</p>
         </div>
         <ExportLinks kind="detalle" />
       </div>
 
-      <ReportFilters lookup={{ ...lookup, hasCycle: !!lookup.settings.cycleAnchor }} period={period} />
+      <div className="border-y border-border py-3.5">
+        <ReportFilters lookup={{ ...lookup, hasCycle: !!lookup.settings.cycleAnchor }} period={period} />
+      </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
         <p className="text-muted-foreground">
@@ -125,7 +127,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-muted/50">
+              <thead className="[&_th]:eyebrow [&_th]:font-normal">
                 <tr className="text-left text-xs text-muted-foreground">
                   <th className="px-4 py-2.5 font-medium">Horario</th>
                   <th className="px-3 py-2.5 text-right font-medium">Duración</th>
@@ -155,21 +157,21 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
                   const dayLabel = format(start, "EEEE d 'de' MMMM yyyy", { locale: es });
                   return [
                     showDay && (
-                      <tr key={`d-${day}`} className="border-t border-border bg-muted/30">
+                      <tr key={`d-${day}`} className="border-t border-border bg-background">
                         <td colSpan={7} className="px-4 py-1.5 text-xs font-semibold">
                           <span className="capitalize">{dayLabel}</span>
-                          <span className="float-right tabular-nums text-muted-foreground">
+                          <span className="float-right font-mono font-normal text-muted-foreground">
                             {formatDuration(dayTotals.get(day) ?? 0)}
                           </span>
                         </td>
                       </tr>
                     ),
                     <tr key={e.id} className="border-t border-border/60 align-top">
-                      <td className="whitespace-nowrap px-4 py-2.5 tabular-nums">
+                      <td className="whitespace-nowrap px-4 py-2.5 font-mono text-[13px] text-muted-foreground">
                         {format(start, "HH:mm")} – {format(end, "HH:mm")}
                         {format(end, "yyyy-MM-dd") !== day && <span className="text-xs text-muted-foreground"> (+1)</span>}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-2.5 text-right font-semibold tabular-nums">
+                      <td className="whitespace-nowrap px-3 py-2.5 text-right font-mono text-[13px]">
                         {formatDuration(secs)}
                         {secs > LONG_ENTRY_HOURS * 3600 && (
                           <span
@@ -223,7 +225,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
           <Link
             href={qs({ pagina: page > 2 ? String(page - 1) : null })}
             aria-disabled={page <= 1}
-            className={`neu-btn inline-flex size-9 items-center justify-center rounded-xl ${page <= 1 ? "pointer-events-none opacity-40" : ""}`}
+            className={`btn-outline inline-flex size-9 items-center justify-center rounded-lg ${page <= 1 ? "pointer-events-none opacity-40" : ""}`}
           >
             <ChevronLeft className="size-4" />
           </Link>
@@ -233,7 +235,7 @@ export default async function DetallePage({ searchParams }: { searchParams: Prom
           <Link
             href={qs({ pagina: String(page + 1) })}
             aria-disabled={page >= pages}
-            className={`neu-btn inline-flex size-9 items-center justify-center rounded-xl ${page >= pages ? "pointer-events-none opacity-40" : ""}`}
+            className={`btn-outline inline-flex size-9 items-center justify-center rounded-lg ${page >= pages ? "pointer-events-none opacity-40" : ""}`}
           >
             <ChevronRight className="size-4" />
           </Link>

@@ -251,7 +251,7 @@ function PersonForm({
       </div>
 
       {person && !isSelf && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-background p-3 neu-inset-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-background p-3 well">
           <Toggle checked={active} onChange={setActive} label={active ? "Cuenta activa" : "Cuenta desactivada (no puede entrar)"} />
           <Button variant="secondary" size="sm" onClick={onReset} disabled={pending}>
             <KeyRound className="size-4" /> Nueva contraseña

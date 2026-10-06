@@ -76,7 +76,7 @@ function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, ca
                 disabled={!!running && id === "manual"}
                 title={running && id === "manual" ? "Para el cronómetro para registrar a mano" : undefined}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition disabled:opacity-40",
+                  "inline-flex items-center gap-1.5 py-1.5 text-sm transition disabled:opacity-40",
                   mode === id ? "segmented-on" : "text-muted-foreground hover:text-foreground",
                 )}
               >
@@ -86,15 +86,17 @@ function TrackerInner({ running, entries, projects, tasks, weeks, lockBefore, ca
           </div>
           <div className="flex gap-5 text-sm text-muted-foreground">
             <span>
-              Hoy <strong className="tabular-nums text-foreground">{formatDuration(today)}</strong>
+              <span className="eyebrow mr-1.5">Hoy</span>
+              <strong className="font-semibold text-foreground">{formatDuration(today)}</strong>
             </span>
             <span>
-              Semana <strong className="tabular-nums text-foreground">{formatDuration(week)}</strong>
+              <span className="eyebrow mr-1.5">Semana</span>
+              <strong className="font-semibold text-foreground">{formatDuration(week)}</strong>
             </span>
           </div>
         </div>
 
-        <Card className={cn("p-4", running && "outline-2 outline-primary/50")}>
+        <Card className={cn("p-5", running && "border-primary/60")}>
           {activeProjects.length === 0 ? (
             <p className="py-2 text-sm text-muted-foreground">
               Todavía no tienes proyectos asignados. Pide a producción que te añada a alguno.

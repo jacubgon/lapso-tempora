@@ -8,7 +8,7 @@ export default async function CuentaPage() {
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Mi cuenta</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Mi cuenta</h1>
         <p className="text-sm text-muted-foreground">Tus datos de acceso.</p>
       </div>
       <NameForm initial={profile.full_name} email={profile.email} />

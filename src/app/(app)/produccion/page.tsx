@@ -1,9 +1,9 @@
 import { requireAdmin } from "@/lib/session";
-import { Card } from "@/components/ui";
 import { ReportFilters } from "@/components/reports/report-filters";
 import { ExportLinks, GroupBySelect } from "@/components/reports/report-controls";
 import { HoursChart } from "@/components/reports/hours-chart";
-import { GroupTable, MatrixTable, StatTiles } from "@/components/reports/report-tables";
+import { GroupTable, HeroStats, MatrixTable } from "@/components/reports/report-tables";
+import { PERIOD_OPTIONS } from "@/lib/period";
 import {
   DIMENSIONS,
   buildReport,
@@ -27,21 +27,19 @@ export default async function InformesPage({ searchParams }: { searchParams: Pro
   const entries = await fetchReportEntries(supabase, filters, period, lookup);
   const report = buildReport(entries, filters, period, lookup);
   const dimLabel = DIMENSIONS.find((d) => d.id === filters.groupBy)!.label;
+  const kindLabel = PERIOD_OPTIONS.find((o) => o.id === period.kind)!.label;
+  const eyebrow = period.kind === "cycle" ? period.label.replace("Ciclo ·", "Ciclo de reunión ·") : `${kindLabel} · ${period.label}`;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">Informes</h1>
-          <p className="text-sm text-muted-foreground">Horas del equipo por periodo, persona y proyecto.</p>
-        </div>
+    <div className="space-y-8">
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <HeroStats report={report} eyebrow={period.kind === "all" ? period.label : eyebrow} />
         <ExportLinks kind="resumen" />
       </div>
 
-      <ReportFilters
-        lookup={{ ...lookup, hasCycle: !!lookup.settings.cycleAnchor }}
-        period={period}
-      />
+      <div className="border-y border-border py-3.5">
+        <ReportFilters lookup={{ ...lookup, hasCycle: !!lookup.settings.cycleAnchor }} period={period} />
+      </div>
 
       {!lookup.settings.cycleAnchor && (
         <p className="text-xs text-muted-foreground">
@@ -50,34 +48,36 @@ export default async function InformesPage({ searchParams }: { searchParams: Pro
         </p>
       )}
 
-      <StatTiles report={report} />
-
       {report.entries === 0 ? (
-        <Card className="px-6 py-14 text-center">
-          <p className="font-medium">Sin horas en este periodo</p>
+        <div className="py-16 text-center">
+          <p className="text-lg font-semibold">Sin horas en este periodo</p>
           <p className="mt-1 text-sm text-muted-foreground">Prueba con otro periodo o quita algún filtro.</p>
-        </Card>
+        </div>
       ) : (
         <>
-          <Card className="p-5">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-sm font-semibold">
-                Horas por {BUCKET_LABEL[report.bucket]} · por {dimLabel.toLowerCase()}
-              </h2>
-              <GroupBySelect options={DIMENSIONS} value={filters.groupBy} />
-            </div>
-            <HoursChart data={report.series} keys={report.seriesKeys} bucketLabel={BUCKET_LABEL[report.bucket]} />
-          </Card>
+          <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+            <section>
+              <div className="mb-4 flex items-baseline justify-between gap-3">
+                <h2 className="text-lg font-semibold tracking-tight">Horas por {BUCKET_LABEL[report.bucket]}</h2>
+                <span className="text-sm text-muted-foreground">por {dimLabel.toLowerCase()}</span>
+              </div>
+              <HoursChart data={report.series} keys={report.seriesKeys} bucketLabel={BUCKET_LABEL[report.bucket]} />
+            </section>
 
-          <Card className="p-5">
-            <h2 className="mb-2 text-sm font-semibold">Reparto por {dimLabel.toLowerCase()}</h2>
-            <GroupTable rows={report.groups} total={report.totalSeconds} dimLabel={dimLabel} />
-          </Card>
+            <section>
+              <div className="mb-2 flex flex-wrap items-baseline justify-between gap-3">
+                <h2 className="text-lg font-semibold tracking-tight">Reparto por {dimLabel.toLowerCase()}</h2>
+                <GroupBySelect options={DIMENSIONS} value={filters.groupBy} />
+              </div>
+              <GroupTable rows={report.groups} total={report.totalSeconds} dimLabel={dimLabel} />
+            </section>
+          </div>
 
-          <Card className="p-5">
-            <h2 className="mb-2 text-sm font-semibold">Personas × proyectos (horas)</h2>
+          <section className="border-t border-border pt-8">
+            <h2 className="mb-2 text-lg font-semibold tracking-tight">Personas × proyectos</h2>
+            <p className="mb-4 text-sm text-muted-foreground">Horas de cada persona en cada proyecto; más intenso, más horas.</p>
             <MatrixTable matrix={report.matrix} />
-          </Card>
+          </section>
         </>
       )}
     </div>

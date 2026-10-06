@@ -172,7 +172,7 @@ function AuditList({ rows, lookup }: { rows: AuditRow[]; lookup: Lookup }) {
             ? (new Date(String(data.ended_at)).getTime() - new Date(String(data.started_at)).getTime()) / 1000
             : null;
         return (
-          <li key={i} className="rounded-xl bg-background p-3 text-sm neu-inset-sm">
+          <li key={i} className="rounded-lg p-3 text-sm well">
             <p className="flex flex-wrap justify-between gap-2">
               <strong>
                 {r.action === "insert" ? "Creada" : r.action === "delete" ? "Eliminada" : "Modificada"} por{" "}

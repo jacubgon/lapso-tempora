@@ -38,7 +38,7 @@ async function visit(cookie, path, expect = [], { binary = false } = {}) {
 }
 
 const admin = await cookieFor("admin@lapso.demo");
-await visit(admin, "/produccion", ["Informes", "Horas registradas", "Personas × proyectos"]);
+await visit(admin, "/produccion", ["Informes", "por persona y día", "Personas × proyectos"]);
 await visit(admin, "/produccion?p=cycle", ["Ciclo ·"]);
 await visit(admin, "/produccion?p=month&agrupar=user", ["Reparto por persona"]);
 await visit(admin, "/produccion?p=year&agrupar=department", ["Reparto por departamento"]);

@@ -5,8 +5,8 @@ export const brand = {
   tagline: "El tiempo de tu equipo, bien contado.",
   initial: "L",
   locale: "es-ES",
-  /** Color principal (icono de la app, barra del móvil) */
-  color: "#4b5bd6",
-  /** Fondo de la pantalla de arranque de la app instalada */
-  background: "#15161c",
+  /** Color principal (icono de la app) */
+  color: "#0f6e66",
+  /** Fondo de la pantalla de arranque de la app instalada (modo oscuro) */
+  background: "#0f1113",
 } as const;

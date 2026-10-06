@@ -51,7 +51,7 @@ export function Checklist({
   }
 
   return (
-    <div className="rounded-xl bg-background neu-inset-sm">
+    <div className="rounded-lg border border-input bg-card">
       <div className="flex items-center gap-2 border-b border-border px-3">
         <Search className="size-4 text-muted-foreground" />
         <input
@@ -116,13 +116,13 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
         aria-checked={checked}
         onClick={() => onChange(!checked)}
         className={cn(
-          "relative h-5 w-9 rounded-full transition neu-inset-sm",
-          checked ? "bg-primary" : "bg-background",
+          "relative h-5 w-9 rounded-full transition",
+          checked ? "bg-primary" : "bg-input",
         )}
       >
         <span
           className={cn(
-            "absolute top-0.5 size-4 rounded-full bg-card neu-raised-sm transition-all",
+            "absolute top-0.5 size-4 rounded-full bg-white shadow-sm transition-all",
             checked ? "left-[18px]" : "left-0.5",
           )}
         />

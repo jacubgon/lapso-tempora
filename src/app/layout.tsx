@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { brand } from "@/config/brand";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// Estilo "editorial claro": grotesca para el texto, monoespaciada para cifras y horas
+const sans = Hanken_Grotesk({ variable: "--font-brand-sans", subsets: ["latin"] });
+const mono = IBM_Plex_Mono({ variable: "--font-brand-mono", subsets: ["latin"], weight: ["400", "500"] });
 
 export const metadata: Metadata = {
   title: { default: brand.name, template: `%s · ${brand.name}` },
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f9fafc" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: brand.background },
   ],
   width: "device-width",
@@ -28,7 +29,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-dvh`}>
+      <body className={`${sans.variable} ${mono.variable} min-h-dvh`}>
         {children}
         <Toaster position="top-center" richColors closeButton />
       </body>

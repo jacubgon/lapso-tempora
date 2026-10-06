@@ -3,48 +3,47 @@
 @custom-variant dark (@media (prefers-color-scheme: dark));
 
 /*
- * Estilo neumórfico: superficies del mismo color que el fondo, con relieve
- * (luz arriba-izquierda, sombra abajo-derecha) o hundidas (inset).
- * Los textos conservan contraste AA; el relieve no es lo único que separa
- * zonas (hay divisores y estados de color).
+ * Estilo "editorial claro": superficies blancas sobre un fondo gris muy suave,
+ * filetes finos en lugar de sombras, un único acento (verde petróleo) y la
+ * tipografía como protagonista. Las cifras van en monoespaciada.
  */
 :root {
-  --background: #e6e9f0;
-  --foreground: #232836;
-  --card: #e6e9f0;
-  --muted: #dce0e8;
-  --muted-foreground: #565d6e;
-  --border: #cfd4de;
-  --primary: #4b5bd6;
+  --background: #f5f6f8;
+  --foreground: #111318;
+  --card: #ffffff;
+  --muted: #eef0f3;
+  --muted-foreground: #5b6170;
+  --border: #e3e5ea;
+  --input: #d4d7de;
+  --primary: #0f6e66;
   --primary-foreground: #ffffff;
-  --primary-soft: #d9ddf6;
-  --success: oklch(0.6 0.15 155);
-  --destructive: #d23f3f;
-  --destructive-soft: #f3dcdc;
-  --ring: #4b5bd6;
-
-  --neu-light: #ffffff;
-  --neu-dark: #bcc3d1;
+  --primary-soft: #e4f1ef;
+  --ink: #111318;
+  --ink-foreground: #ffffff;
+  --success: #1f8a4c;
+  --destructive: #c23b3b;
+  --destructive-soft: #fbeaea;
+  --ring: #0f6e66;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #23262e;
-    --foreground: #e8eaf0;
-    --card: #23262e;
-    --muted: #2a2e37;
-    --muted-foreground: #a4aab8;
-    --border: #343843;
-    --primary: #8592f0;
-    --primary-foreground: #14162b;
-    --primary-soft: #343a5e;
-    --success: oklch(0.72 0.15 155);
+    --background: #0f1113;
+    --foreground: #eceef1;
+    --card: #16191c;
+    --muted: #1d2125;
+    --muted-foreground: #a0a6b1;
+    --border: #272c32;
+    --input: #353b43;
+    --primary: #4fb8ad;
+    --primary-foreground: #06201d;
+    --primary-soft: #133a36;
+    --ink: #eceef1;
+    --ink-foreground: #111318;
+    --success: #4cc38a;
     --destructive: #f07373;
-    --destructive-soft: #4a2b2f;
-    --ring: #8592f0;
-
-    --neu-light: #2d313b;
-    --neu-dark: #17191f;
+    --destructive-soft: #3a2224;
+    --ring: #4fb8ad;
   }
 }
 
@@ -55,80 +54,64 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-input: var(--input);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--primary-soft);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
   --color-success: var(--success);
   --color-destructive: var(--destructive);
   --color-destructive-soft: var(--destructive-soft);
   --color-ring: var(--ring);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-brand-sans), system-ui, sans-serif;
+  --font-mono: var(--font-brand-mono), ui-monospace, monospace;
 }
 
-/* --- Relieves ------------------------------------------------------------------ */
+/* --- Piezas reutilizables ------------------------------------------------------- */
 
-@utility neu-raised {
-  box-shadow:
-    7px 7px 16px var(--neu-dark),
-    -7px -7px 16px var(--neu-light);
-}
-@utility neu-raised-sm {
-  box-shadow:
-    3px 3px 7px var(--neu-dark),
-    -3px -3px 7px var(--neu-light);
-}
-@utility neu-inset {
-  box-shadow:
-    inset 4px 4px 9px var(--neu-dark),
-    inset -4px -4px 9px var(--neu-light);
-}
-@utility neu-inset-sm {
-  box-shadow:
-    inset 2px 2px 5px var(--neu-dark),
-    inset -2px -2px 5px var(--neu-light);
-}
-@utility neu-flat {
-  box-shadow: none;
-}
-
-/* Botón neutro en relieve que se hunde al pulsarlo */
-@utility neu-btn {
+/* Botón de contorno: blanco con filete, se oscurece al pasar */
+@utility btn-outline {
   background: var(--card);
-  box-shadow:
-    3px 3px 7px var(--neu-dark),
-    -3px -3px 7px var(--neu-light);
+  border: 1px solid var(--input);
   transition:
-    box-shadow 0.15s ease,
-    color 0.15s ease;
+    background-color 0.15s ease,
+    border-color 0.15s ease;
   &:hover {
-    color: var(--primary);
-  }
-  &:active {
-    box-shadow:
-      inset 2px 2px 5px var(--neu-dark),
-      inset -2px -2px 5px var(--neu-light);
+    background: var(--muted);
   }
 }
 
-/* Control segmentado: carril hundido con la opción activa en relieve */
+/* Zona contenida (listas dentro de diálogos, avisos): filete fino */
+@utility well {
+  border: 1px solid var(--border);
+}
+
+/* Pestañas subrayadas: la opción activa lleva una línea del color de acento */
 @utility segmented {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
-  padding: 0.3rem;
-  border-radius: 0.9rem;
-  background: var(--background);
-  box-shadow:
-    inset 2px 2px 5px var(--neu-dark),
-    inset -2px -2px 5px var(--neu-light);
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  & > * {
+    border-radius: 0;
+    padding-inline: 0.125rem;
+    border-bottom: 2px solid transparent;
+  }
 }
 @utility segmented-on {
-  background: var(--card);
-  color: var(--primary);
-  box-shadow:
-    3px 3px 6px var(--neu-dark),
-    -3px -3px 6px var(--neu-light);
+  color: var(--foreground);
+  font-weight: 600;
+  border-bottom-color: var(--primary) !important;
+}
+
+/* Etiqueta pequeña en mayúsculas y monoespaciada (cabeceras de sección, fechas) */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
 }
 
 @layer base {
@@ -143,11 +126,5 @@
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
-  }
-  /* En modo de alto contraste las sombras desaparecen: volvemos a los bordes */
-  @media (forced-colors: active) {
-    * {
-      box-shadow: none !important;
-    }
   }
 }

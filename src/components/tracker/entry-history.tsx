@@ -114,18 +114,19 @@ export function EntryHistory({ entries, projects, tasks, weeks, lockBefore, canB
       {grouped.map((week) => (
         <section key={week.key}>
           <div className="mb-3 flex items-baseline justify-between px-1">
-            <h2 className="text-sm font-semibold">{weekLabel(week.start)}</h2>
+            <h2 className="text-lg font-semibold tracking-tight">{weekLabel(week.start)}</h2>
             <p className="text-sm text-muted-foreground">
-              Total <span className="font-semibold tabular-nums text-foreground">{formatDuration(week.seconds)}</span>
+              <span className="eyebrow mr-1.5">Total</span>
+              <span className="font-semibold text-foreground">{formatDuration(week.seconds)}</span>
             </p>
           </div>
 
           <div className="space-y-3">
             {week.days.map((day) => (
               <Card key={day.key} className="overflow-hidden">
-                <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2">
-                  <h3 className="text-sm font-medium">{dayLabel(day.date)}</h3>
-                  <span className="text-sm font-semibold tabular-nums">{formatDuration(day.seconds)}</span>
+                <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
+                  <h3 className="eyebrow">{dayLabel(day.date)}</h3>
+                  <span className="font-mono text-xs">{formatDuration(day.seconds)}</span>
                 </div>
                 <ul className="divide-y divide-border">
                   {day.entries.map((e) => {
@@ -135,7 +136,7 @@ export function EntryHistory({ entries, projects, tasks, weeks, lockBefore, canB
                     return (
                       <li key={e.id} className="group flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3">
                         <div className="min-w-0 flex-1 basis-60">
-                          <p className="truncate text-sm font-medium">{e.title}</p>
+                          <p className="truncate text-sm font-semibold">{e.title}</p>
                           <p className="mt-0.5 flex items-center gap-1.5 truncate text-xs text-muted-foreground">
                             <span className="size-2 shrink-0 rounded-full" style={{ background: p?.color ?? "var(--border)" }} />
                             <span className="truncate" style={{ color: p?.color }}>
@@ -144,10 +145,10 @@ export function EntryHistory({ entries, projects, tasks, weeks, lockBefore, canB
                             {t && <span className="truncate">· {t.name}</span>}
                           </p>
                         </div>
-                        <p className="text-sm tabular-nums text-muted-foreground">
+                        <p className="font-mono text-xs text-muted-foreground">
                           {format(new Date(e.started_at), "HH:mm")} – {e.ended_at && format(new Date(e.ended_at), "HH:mm")}
                         </p>
-                        <p className="w-20 text-right text-sm font-semibold tabular-nums">
+                        <p className="w-20 text-right font-mono text-[13px]">
                           {formatDuration(entrySeconds(e))}
                         </p>
                         <div className="flex w-[6.75rem] justify-end gap-0.5">
@@ -186,7 +187,7 @@ export function EntryHistory({ entries, projects, tasks, weeks, lockBefore, canB
         <Link
           href={`/?semanas=${weeks + 4}`}
           scroll={false}
-          className="neu-btn rounded-xl px-4 py-2 text-sm font-medium"
+          className="btn-outline rounded-lg px-4 py-2 text-sm font-medium"
         >
           Ver semanas anteriores
         </Link>

@@ -83,7 +83,7 @@ export function TimerPanel({ running, projects, tasks }: Props) {
       {suspicious && startedAt && (
         <div
           role="alert"
-          className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-[#eda100]/40 bg-[#eda100]/10 px-3 py-2 text-sm"
+          className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-[#eda100]/50 bg-[#eda100]/10 px-3 py-2 text-sm"
         >
           <AlertTriangle className="size-4 shrink-0 text-[#b37a00] dark:text-[#eda100]" />
           <p className="min-w-0 flex-1">
@@ -97,7 +97,7 @@ export function TimerPanel({ running, projects, tasks }: Props) {
       )}
 
       <form
-        className="flex flex-col gap-3 md:flex-row md:items-center"
+        className="flex flex-col gap-4 md:flex-row md:items-end"
         onSubmit={(e) => {
           e.preventDefault();
           if (!running) return onStart();
@@ -116,13 +116,22 @@ export function TimerPanel({ running, projects, tasks }: Props) {
             tasks={tasks}
           />
         </div>
-        <div className="flex items-center justify-between gap-3 md:justify-end">
-          <span
-            className={`font-mono text-2xl font-semibold tabular-nums tracking-tight ${running ? "text-foreground" : "text-muted-foreground/60"}`}
-            aria-live="off"
-          >
-            {elapsed}
-          </span>
+        <div className="order-first flex items-end justify-between gap-4 md:order-none md:justify-end">
+          <div>
+            {running && startedAt && (
+              <p className="eyebrow mb-1 flex items-center gap-1.5 !text-primary">
+                <span className="size-1.5 animate-pulse rounded-full bg-primary" />
+                En marcha · desde {format(startedAt, "HH:mm")}
+              </p>
+            )}
+            <span
+              className={`text-5xl font-medium leading-none tracking-[-0.05em] tabular-nums md:text-4xl ${running ? "text-foreground" : "text-muted-foreground/50"}`}
+              aria-live="off"
+            >
+              {elapsed.slice(0, -3)}
+              <span className="text-muted-foreground/50">{elapsed.slice(-3)}</span>
+            </span>
+          </div>
           <div className="flex items-center gap-1.5">
             {running && (
               <Button variant="ghost" size="icon" onClick={onDiscard} disabled={pending} title="Descartar">
@@ -130,7 +139,7 @@ export function TimerPanel({ running, projects, tasks }: Props) {
               </Button>
             )}
             {running ? (
-              <Button type="submit" variant="danger" disabled={pending} className="w-28">
+              <Button type="submit" disabled={pending} className="w-28">
                 <Square className="size-3.5 fill-current" /> Parar
               </Button>
             ) : (

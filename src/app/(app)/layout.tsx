@@ -18,15 +18,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-30 bg-background/90 pt-[env(safe-area-inset-top)] shadow-[0_8px_16px_-12px_var(--neu-dark)] backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 sm:gap-4">
+      <header className="sticky top-0 z-30 border-b border-border bg-card/95 pt-[env(safe-area-inset-top)] backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 sm:gap-7 sm:px-6">
           <Link href="/" className="flex shrink-0 items-center gap-2 py-3" aria-label={brand.name}>
-            <span className="inline-flex size-7 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
+            <span className="inline-flex size-6 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground">
               {brand.initial}
             </span>
-            <span className="hidden font-semibold tracking-tight sm:inline">{brand.name}</span>
+            <span className="hidden font-bold tracking-tight sm:inline">{brand.name}</span>
           </Link>
-          <div className="min-w-0 flex-1">
+          <div className="flex min-w-0 flex-1 self-stretch">
             <Nav items={items} />
           </div>
           <div className="flex shrink-0 items-center gap-1">
@@ -58,7 +58,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-4 py-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">{children}</main>
+      <main className="mx-auto max-w-6xl px-4 py-8 pb-[calc(2.5rem+env(safe-area-inset-bottom))] sm:px-6">{children}</main>
     </div>
   );
 }

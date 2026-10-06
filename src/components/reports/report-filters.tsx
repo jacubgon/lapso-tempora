@@ -48,16 +48,16 @@ export function ReportFilters({ lookup, period, show = { department: true, proje
   const hasFilters = !!(dep || user || project || task);
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
       {/* Periodo */}
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <div className="segmented">
           {PERIOD_OPTIONS.filter((o) => o.id !== "cycle" || lookup.hasCycle).map((o) => (
             <button
               key={o.id}
               onClick={() => update({ p: o.id, d: null })}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-sm font-medium transition",
+                "py-1.5 text-sm transition",
                 period.kind === o.id ? "segmented-on" : "text-muted-foreground hover:text-foreground",
               )}
             >
@@ -99,7 +99,7 @@ export function ReportFilters({ lookup, period, show = { department: true, proje
                 <ChevronLeft className="size-4" />
               </Button>
             )}
-            <span className="min-w-44 text-center text-sm font-semibold">{period.label}</span>
+            <span className="min-w-40 text-center font-mono text-xs text-muted-foreground">{period.label}</span>
             {period.kind !== "all" && (
               <Button
                 variant="ghost"
@@ -117,7 +117,7 @@ export function ReportFilters({ lookup, period, show = { department: true, proje
       </div>
 
       {/* Filtros */}
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 [&_select]:h-9">
         {show.department && lookup.departments.length > 0 && (
           <Select
             aria-label="Departamento"

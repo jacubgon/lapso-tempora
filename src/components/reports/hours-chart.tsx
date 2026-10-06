@@ -16,34 +16,24 @@ export function HoursChart({ data, keys, bucketLabel }: { data: Point[]; keys: S
 
   return (
     <div>
-      {keys.length > 1 && (
-        <ul className="mb-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Leyenda">
-          {keys.map((k) => (
-            <li key={k.key} className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-sm" style={{ background: k.color }} />
-              {k.label}
-            </li>
-          ))}
-        </ul>
-      )}
       <div className="h-72" role="img" aria-label={`Horas por ${bucketLabel}`}>
         {isClient && (
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} margin={{ top: 8, right: 4, left: -12, bottom: 0 }} barCategoryGap="18%">
-              <CartesianGrid vertical={false} stroke="var(--border)" />
+            <BarChart data={data} margin={{ top: 8, right: 0, left: -14, bottom: 0 }} barCategoryGap="30%">
+              <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="2 4" />
               <XAxis
                 dataKey="label"
                 tickLine={false}
-                axisLine={{ stroke: "var(--border)" }}
+                axisLine={{ stroke: "var(--input)" }}
                 interval={interval}
-                tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+                tick={{ fontSize: 10, fill: "var(--muted-foreground)", fontFamily: "var(--font-mono)" }}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
                 allowDecimals={false}
-                tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
-                tickFormatter={(v) => `${v} h`}
+                tick={{ fontSize: 10, fill: "var(--muted-foreground)", fontFamily: "var(--font-mono)" }}
+                tickFormatter={(v) => `${v}`}
               />
               <Tooltip
                 cursor={{ fill: "var(--muted)", opacity: 0.6 }}
@@ -52,7 +42,7 @@ export function HoursChart({ data, keys, bucketLabel }: { data: Point[]; keys: S
                   const rows = payload.filter((p) => Number(p.value) > 0).reverse();
                   const total = rows.reduce((s, p) => s + Number(p.value), 0);
                   return (
-                    <div className="min-w-44 rounded-xl bg-card px-3 py-2 text-xs neu-raised">
+                    <div className="min-w-44 rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-lg shadow-black/10">
                       <p className="mb-1.5 flex justify-between gap-4 font-semibold">
                         <span>{label}</span>
                         <span className="tabular-nums">{fmtH(total)}</span>
@@ -77,10 +67,10 @@ export function HoursChart({ data, keys, bucketLabel }: { data: Point[]; keys: S
                   name={k.label}
                   stackId="h"
                   fill={k.color}
-                  stroke="var(--card)"
+                  stroke="var(--background)"
                   strokeWidth={1}
-                  radius={i === keys.length - 1 ? [4, 4, 0, 0] : 0}
-                  maxBarSize={48}
+                  radius={i === keys.length - 1 ? [3, 3, 0, 0] : 0}
+                  maxBarSize={22}
                   isAnimationActive={false}
                 />
               ))}
@@ -88,6 +78,16 @@ export function HoursChart({ data, keys, bucketLabel }: { data: Point[]; keys: S
           </ResponsiveContainer>
         )}
       </div>
+      {keys.length > 1 && (
+        <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-muted-foreground" aria-label="Leyenda">
+          {keys.map((k) => (
+            <li key={k.key} className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full" style={{ background: k.color }} />
+              {k.label}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
